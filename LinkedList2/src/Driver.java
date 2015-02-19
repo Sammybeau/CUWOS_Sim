@@ -1,9 +1,15 @@
 public class Driver 
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws Exception
 	{
-		LinkedList a = new LinkedList();
-		a.addEnd(1);
-		a.display();
+		LinkedList ll = new LinkedList();
+		ll.display();
+		ll.addFront(3);
+		ll.addFront(5);
+		ll.addFront(11);
+		ll.addEnd(7);
+		ll.addAtIndex(99, 2);
+		ll.removeAtIndex(3);
+		ll.display();
 	}
 }
