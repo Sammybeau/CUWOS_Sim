@@ -7,9 +7,7 @@ public class Driver
 		ll.addFront(3);
 		ll.addFront(5);
 		ll.addFront(11);
-		ll.addEnd(7);
-		ll.addAtIndex(99, 2);
-		ll.removeAtIndex(3);
 		ll.display();
+		ll.displayInReverse();
 	}
 }
