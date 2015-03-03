@@ -146,6 +146,7 @@ public class LinkedList
 			return curr.getPayload();
 		}
 	}
+	
 	public int removeFront() throws Exception
 	{
 		if(head == null)
