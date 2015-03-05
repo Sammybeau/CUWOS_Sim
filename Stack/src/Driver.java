@@ -1,17 +1,8 @@
-
-public class Driver
+public class Driver 
 {
-	public static void main(String[] args)
+	public static void main(String[] elephant) throws Exception
 	{
-		Stack a = new Stack();
-		a.push(1);
-		a.push(2);
-		a.push(3);
-		a.push(4);
-		a.push(5);
-		a.pop();
-		System.out.println(a.peek());
-		a.pop();
-		System.out.println(a.pop());
+		RPCalc theCalc = new RPCalc();
+		theCalc.on();
 	}
 }
