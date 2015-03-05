@@ -198,5 +198,3 @@ public class LinkedList
 		}
 	}
 	}
-
-//please work again
