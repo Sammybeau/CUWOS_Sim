@@ -52,43 +52,48 @@ public class Node extends BinaryTree
 		this.visited = true;
 	}
 	
-	public Node getLeftNode() {
+	public Node getLeftNode() 
+	{
 		return leftNode;
 	}
 
-	public void setLeftNode(Node leftNode) {
+	public void setLeftNode(Node leftNode) 
+	{
 		this.leftNode = leftNode;
 	}
 
-	public Node getRightNode() {
+	public Node getRightNode()
+	{
 		return rightNode;
 	}
 
-	public void setRightNode(Node rightNode) {
+	public void setRightNode(Node rightNode)
+	{
 		this.rightNode = rightNode;
 	}
 
-	public int getPayload() {
+	public int getPayload() 
+	{
 		return payload;
 	}
 
-	public boolean getVisited() {
+	public boolean getVisited()
+	{
 		return visited;
 	}
 
-	public void setVisited(boolean visited) {
+	public void setVisited(boolean visited)
+	{
 		this.visited = visited;
 	}
 
-	public Node getParentNode() {
+	public Node getParentNode() 
+	{
 		return parentNode;
 	}
 
-	public void setParentNode(Node parentNode) {
+	public void setParentNode(Node parentNode) 
+	{
 		this.parentNode = parentNode;
-	}	
-	
-	
-	
-	
+	}		
 }

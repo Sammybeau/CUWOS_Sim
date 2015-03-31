@@ -17,6 +17,8 @@ public class Driver
 		bt.add(9);
 		bt.add(20);
 		bt.add(31);
-		bt.displayPostOrder();
+		bt.displayInOrder();
+		bt.search(6);
+		bt.displayPreOrder();
 	}
 }
