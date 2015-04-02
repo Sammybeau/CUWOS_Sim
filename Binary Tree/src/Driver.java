@@ -1,24 +1,29 @@
-
 public class Driver 
 {
 	public static void main(String[] args) 
 	{
-		BinaryTree bt = new BinaryTree();
-		bt.add(12);
-		bt.add(6);
-		bt.add(2);
-		bt.add(18);
-		bt.add(29);
-		bt.add(4);
-		bt.add(3);
-		bt.add(5);
-		bt.add(8);
-		bt.add(7);
-		bt.add(9);
-		bt.add(20);
-		bt.add(31);
-		bt.displayInOrder();
-		bt.search(6);
-		bt.displayPreOrder();
+		//BinaryTreeLitman bt = new BinaryTreeLitman();
+		BinaryTree b = new BinaryTree();
+		b.add(9);
+		System.out.println("-----after 9");
+		b.add(5);
+		System.out.println("----after 5");
+		b.add(14);
+		System.out.println("-----after 14");
+		b.add(10);
+		System.out.println("----after 10");
+		b.add(16);
+		System.out.println("----after 16");
+		b.add(4);
+		System.out.println("----after 4");
+		//System.out.println(b.isBalanced());
+		b.add(3);
+		System.out.println("----after 3");		
+		//System.out.println(bt.search(28));
+		//b.add(2);
+		//System.out.println("----after 2");
+		//b.visitInOrder();
+		System.out.println(b.isBalanced());
+		b.displayPreOrder();	
 	}
 }
