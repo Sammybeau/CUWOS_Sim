@@ -1,128 +1,38 @@
 public class BinaryTree 
-{
-	//private Node root;
-	private boolean isEmpty;
+{		
+	private Boolean isEmpty;
 	private int payload;
 	private BinaryTree leftTree;
 	private BinaryTree rightTree;
 	private BinaryTree parent;
 	private int depth;
-	
+
 	public BinaryTree()
 	{
-		this(0);
+		this(0);	
 	}
-	
+
 	private BinaryTree(int depth)
 	{
 		this.isEmpty = true;
 		this.leftTree = null;
 		this.rightTree = null;
 		this.depth = depth;
-		this.parent = null;		
+		this.parent = null; 
 	}
-	
-	private void changeDepth(BinaryTree pivot)
+	private void  updateDepths(int newDepth)
 	{
-		if(pivot.rightTree == null)
+		this.depth = newDepth;
+		if(this.leftTree != null)
 		{
-			pivot.depth = pivot.parent.depth + 1;
+			this.leftTree.updateDepths(this.depth+1);
 		}
-		else
+		if(this.rightTree != null)
 		{
-			pivot.depth = pivot.depth - 1;	
-		}		
-		if(pivot.leftTree != null)
-		{
-			pivot.leftTree.changeDepth(pivot.leftTree);
-		}
-		if(pivot.rightTree != null)
-		{
-			pivot.rightTree.changeDepth(pivot.rightTree);
+			this.rightTree.updateDepths(this.depth+1);
 		}
 	}
-	
-	private void rotateRight(BinaryTree pivot)
-	{
-		BinaryTree pivRT = null;
-		BinaryTree pivP = null;
-		BinaryTree pivGP = null;
-		if(pivot.rightTree != null)
-		{
-			pivRT = pivot.rightTree;
-			pivot.rightTree = null;
-		}
-		pivP = pivot.parent;
-		pivGP = (pivP == null?null:pivP.parent);
-		if(pivGP != null)
-		{
-			if(pivGP.leftTree == pivP)
-			{
-				pivGP.leftTree = pivot;
-			}
-			else
-			{
-				pivGP.rightTree = pivot;
-			}
-		}
-		else
-		{
-			pivot.parent = null;
-		}
-		if(pivP == null)
-		{
-			System.err.println("I have no parent...should I be calling rotate right?");
-			return;
-		}
-		else
-		{
-			pivP.leftTree = pivRT;
-		}
-		pivot.rightTree = pivP;
-		pivP.parent = pivot;
-	}
-	
-	private void rotateLeft(BinaryTree pivot)
-	{
-		BinaryTree pivLT = null;
-		BinaryTree pivP = null;
-		BinaryTree pivGP = null;
-		if(pivot.leftTree != null)
-		{
-			pivLT = pivot.leftTree;
-			pivot.leftTree = null;
-		}
-		pivP = pivot.parent;
-		pivGP = (pivP == null?null:pivP.parent);
-		if(pivGP != null)
-		{
-			if(pivGP.leftTree == pivP)
-			{
-				pivGP.leftTree = pivot;
-			}
-			else
-			{
-				pivGP.rightTree = pivot;
-			}
-		}
-		else
-		{
-			pivot.parent = null;
-		}
-		
-		if(pivP == null)
-		{
-			System.err.println("I have no parent...should I be calling rotate left?");
-			return;
-		}
-		else
-		{
-			pivP.rightTree = pivLT;
-		}
-		pivot.leftTree = pivP;
-		pivP.parent = pivot;
-	}
-	
+
 	public boolean search(int value)
 	{
 		if(this.isEmpty)
@@ -162,7 +72,7 @@ public class BinaryTree
 			}
 		}
 	}
-	
+
 	private void visitInOrder()
 	{
 		if(this.leftTree != null)
@@ -174,6 +84,32 @@ public class BinaryTree
 		{
 			this.rightTree.visitInOrder();
 		}
+	}
+
+	public void visitPreOrder()
+	{
+		System.out.println(this.payload + " : " + this.depth);
+		if(this.leftTree != null)
+		{
+			this.leftTree.visitPreOrder();
+		}
+		if(this.rightTree != null)
+		{
+			this.rightTree.visitPreOrder();
+		}
+	}
+
+	public void visitPostOrder()
+	{
+		if(this.leftTree != null)
+		{
+			this.leftTree.visitPostOrder();
+		}
+		if(this.rightTree != null)
+		{
+			this.rightTree.visitPostOrder();
+		}
+		System.out.println(this.payload + " : " + this.depth);
 	}
 
 	public void displayInOrder()
@@ -188,20 +124,7 @@ public class BinaryTree
 			this.visitInOrder();
 		}
 	}
-	
-	private void visitPreOrder()
-	{
-		System.out.println(this.payload);
-		if(this.leftTree != null)
-		{
-			this.leftTree.visitPreOrder();
-		}
-		if(this.rightTree != null)
-		{
-			this.rightTree.visitPreOrder();
-		}
-	}
-	
+
 	public void displayPreOrder()
 	{
 		System.out.println("**** Pre Order ****");
@@ -214,20 +137,7 @@ public class BinaryTree
 			this.visitPreOrder();
 		}
 	}
-	
-	private void visitPostOrder()
-	{
-		if(this.leftTree != null)
-		{
-			this.leftTree.visitPostOrder();
-		}
-		if(this.rightTree != null)
-		{
-			this.rightTree.visitPostOrder();
-		}
-		System.out.println(this.payload);
-	}
-	
+
 	public void displayPostOrder()
 	{
 		System.out.println("**** Post Order ****");
@@ -240,7 +150,7 @@ public class BinaryTree
 			this.visitPostOrder();
 		}
 	}
-	
+
 	private int getMaxDepth()
 	{
 		if(this.leftTree == null && this.rightTree == null)
@@ -260,7 +170,7 @@ public class BinaryTree
 			return Math.max(this.leftTree.getMaxDepth(), this.rightTree.getMaxDepth());
 		}
 	}
-	
+
 	public boolean isBalanced()
 	{
 		if(this.isEmpty)
@@ -274,9 +184,97 @@ public class BinaryTree
 			System.out.println("Max Left = " + currMaxLeftDepth);
 			System.out.println("Max Right = " + currMaxRightDepth);
 			return Math.abs(currMaxLeftDepth - currMaxRightDepth) <= 1;
-		}
+		}	
 	}
-	
+
+	private void rotateRight(BinaryTree pivot)
+	{
+		BinaryTree pivRT = null;
+		BinaryTree pivP = null;
+		BinaryTree pivGP = null;
+
+		if(pivot.rightTree != null)
+		{
+			pivRT = pivot.rightTree;
+			pivot.rightTree = null;
+		}
+		pivP = pivot.parent;
+		pivGP = (pivP == null?null:pivP.parent);
+		if(pivGP != null)
+		{
+			if(pivGP.leftTree == pivP)
+			{
+				pivGP.leftTree = pivot;
+			}
+			else
+			{
+				pivGP.rightTree = pivot;
+			}
+			pivot.parent = pivGP;
+		}
+		else
+		{
+			pivot.parent = null;
+		}
+		if(pivP == null)
+		{
+			System.err.println("I have no parent...should I be calling rotate right?");
+			return;
+		}
+		else
+		{
+			pivP.leftTree = pivRT;
+		}
+		pivot.rightTree = pivP;
+		pivP.parent = pivot;
+
+		pivot.updateDepths(pivot.depth-1);
+	}
+
+	private void rotateLeft(BinaryTree pivot)
+	{
+		BinaryTree pivLT = null;
+		BinaryTree pivP = null;
+		BinaryTree pivGP = null;
+
+		if(pivot.leftTree != null)
+		{
+			pivLT = pivot.leftTree;
+			pivot.leftTree = null;
+		}
+		pivP = pivot.parent;
+		pivGP = (pivP == null?null:pivP.parent);
+		if(pivGP != null)
+		{
+			if(pivGP.leftTree == pivP)
+			{
+				pivGP.leftTree = pivot;
+			}
+			else
+			{
+				pivGP.rightTree = pivot;
+			}
+			pivot.parent = pivGP;
+		}
+		else
+		{
+			pivot.parent = null;
+		}
+		if(pivP == null)
+		{
+			System.err.println("I have no parent...should I be calling rotate left?");
+			return;
+		}
+		else
+		{
+			pivP.rightTree = pivLT;
+		}
+		pivot.leftTree = pivP;
+		pivP.parent = pivot;		
+
+		pivot.updateDepths(pivot.depth-1);
+	}
+
 	public void add(int value)
 	{
 		if(this.isEmpty)
@@ -305,15 +303,71 @@ public class BinaryTree
 				this.rightTree.add(value);
 			}
 		}
-		if(this.depth == 2)
+
+		if(this.parent == null)
 		{
-			this.parent.parent.displayInOrder();
-			System.out.println("rotating right");
-			rotateRight(this.parent);
-			this.parent.displayInOrder();
-			changeDepth(this.parent);
-			this.parent.displayInOrder();
+			if(!this.isBalanced())
+			{
+				if(this.leftTree == null)
+				{
+					if (this.rightTree.leftTree == null)
+					{
+						this.rightTree.rotateLeft(this.rightTree);
+					}
+					else
+					{
+						this.rightTree.rotateRight(this.rightTree.leftTree);
+						this.rightTree.rotateLeft(this.rightTree);
+					}
+				}
+				else if(this.rightTree == null)
+				{
+					if (this.leftTree.rightTree == null)
+					{
+						this.rightTree.rotateLeft(this.leftTree);
+					}
+					else
+					{
+						this.leftTree.rotateLeft(this.leftTree.rightTree);
+						this.leftTree.rotateRight(this.leftTree);
+					}
+				}
+				else
+				{
+					if(this.leftTree.getMaxDepth() > this.rightTree.getMaxDepth())
+					{
+						if (this.leftTree.rightTree == null)
+						{
+							this.rightTree.rotateLeft(this.leftTree.leftTree);
+						}
+						else if(this.leftTree.rightTree != null && this.leftTree.leftTree != null)
+						{
+							this.leftTree.rotateRight(this.leftTree);
+						}
+						else
+						{
+							this.leftTree.rotateLeft(this.leftTree.rightTree);
+							this.leftTree.rotateRight(this.leftTree);
+						}
+					}
+					else
+					{
+						if (this.rightTree.leftTree == null)
+						{
+							this.rightTree.rotateLeft(this.rightTree.rightTree);
+						}
+						else if(this.rightTree.leftTree != null && this.rightTree.rightTree != null)
+						{
+							this.rightTree.rotateLeft(this.rightTree);
+						}
+						else
+						{
+							this.rightTree.rotateRight(this.rightTree.leftTree);
+							this.rightTree.rotateLeft(this.rightTree);
+						}
+					}
+				}
+			}
 		}
-	
 	}
 }
