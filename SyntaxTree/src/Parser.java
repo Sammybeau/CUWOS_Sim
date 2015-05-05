@@ -1,78 +1,112 @@
-public class Parser
+public class Parser 
 {
 	private String theStmt;
 	private int pos;
+	private static final String legalVariableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "; 
+	private static final String legalOpCharacters = "+-*/% ";
+	private VarDefStatement theSytaxTree;
 	
 	public Parser(String theStmt)
 	{
 		this.theStmt = theStmt;
+		this.theSytaxTree = null;
 		this.pos = 0;
 	}
 	
+	public VarDefStatement getTheSytaxTree() {
+		return theSytaxTree;
+	}
+
 	void parse()
 	{
-		this.parse_stmt();
+		this.theSytaxTree = this.parse_stmt();
 	}
 	
-	private void parse_stmt()
+	private String getNextToken(char c)
 	{
-		theStmt = theStmt.replaceAll("\\s+","");
-		pos = theStmt.indexOf('=');
-		System.out.println("Read: VarName = " + theStmt.substring(0,pos));
-		System.out.println("------Reading: Math-Expr because of: " + theStmt.charAt(pos));
-		pos++;
-		parse_math_expr();		
-	}
-	
-	private void parse_math_expr()
-	{
-		System.out.println("------Reading Left at: "+pos);
-		if(theStmt.charAt(pos) == '(')
+		while(pos < this.theStmt.length())
 		{
-			System.out.println("------Reading: NEW Math-Expr because of: " + theStmt.charAt(pos));
-			pos = pos+1;
-			parse_math_expr();
+			if(this.theStmt.charAt(pos) == c)
+			{
+				pos++;
+				break;
+			}
+			pos++;
+		}
+		return "" + c;
+	}
+	
+	private String getNextToken(String legalChars)
+	{
+		String token = "";
+		while(pos < this.theStmt.length())
+		{
+			if(legalChars.indexOf(this.theStmt.charAt(pos)) != -1)
+			{
+				token += this.theStmt.charAt(pos);
+			}
+			else
+			{
+				break;
+			}
+			pos++;
+		}
+		return token.trim();
+	}
+	
+	private VarDefStatement parse_stmt()
+	{
+		String varName = this.getNextToken(Parser.legalVariableCharacters);
+		System.out.println("Read VarName: " + varName);
+		VarExpression theVE = new VarExpression(varName);
+		
+		this.getNextToken('=');
+		System.out.println("Burned =");
+		
+		MathExpression theME = this.parse_math_expr();
+		
+		this.getNextToken(';');
+		System.out.println("Burned ;");
+		
+		return new VarDefStatement(theVE, theME);
+	}
+	
+	private MathExpression parse_math_expr()
+	{
+		String varName = this.getNextToken(Parser.legalVariableCharacters);
+		Expression leftOperand = null;
+		Expression rightOperand = null;
+		OpExpression theOpExpression = null;
+		
+		if(varName.length() == 0)
+		{
+			this.getNextToken('(');
+			System.out.println("Burned (");
+			leftOperand = this.parse_math_expr();
+			this.getNextToken(')');
+			System.out.println("Burned )");
 		}
 		else
 		{
-			int op = pos;			
-			while("+-*/".indexOf(theStmt.charAt(op)) == -1)
-			{
-				op++;
-			}			
-			System.out.println("Read Left: " + theStmt.substring(pos,op));
-			pos = op;						
-		}		
+			System.out.println("Read VarName: " + varName);
+			leftOperand = new VarExpression(varName);
+		}
+		String op = this.getNextToken(Parser.legalOpCharacters);
+		System.out.println("Read Op: " + op);
+		theOpExpression = new OpExpression(""+op.charAt(0));
 		
-		
-		System.out.println("------Reading Op at: "+pos);
-		System.out.println("Read Op: " + theStmt.charAt(pos));
-		pos++;		
-		
-		
-		System.out.println("------Reading Right at: "+pos);
-		if(theStmt.charAt(pos) == '(')
+		varName = this.getNextToken(Parser.legalVariableCharacters);
+		if(varName.length() == 0)
 		{
-			System.out.println("------Reading: NEW Math-Expr because of: " + theStmt.charAt(pos));
-			pos = pos+1;
-			parse_math_expr();
+			this.getNextToken('(');
+			rightOperand = this.parse_math_expr();
+			this.getNextToken(')');
 		}
 		else
 		{
-			int end = pos;
-			while(");".indexOf(theStmt.charAt(end)) == -1)
-			{
-				end++;
-			}
-			System.out.println("Read Right: " + theStmt.substring(pos,end));
-			if(end+1 < theStmt.length())
-			{
-				while(theStmt.charAt(end+1) == ')')
-				{
-					end++;
-				}
-			}
-			pos = end+1;
-		}		
+			System.out.println("Read VarName: " + varName);
+			rightOperand = new VarExpression(varName);
+		}
+		return new MathExpression(leftOperand, rightOperand, theOpExpression);
 	}
 }
