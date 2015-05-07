@@ -10,7 +10,5 @@ public class VarExpression extends Expression
 	public String toString()
 	{
 		return varName;
-	}
-	
-	
+	}	
 }

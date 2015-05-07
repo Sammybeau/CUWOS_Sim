@@ -1,7 +1,8 @@
-public class VarDefStatement extends Object
+public class VarDefStatement
 {
 	private VarExpression theVarExpr;
 	private MathExpression theMathExpr;
+	private Variable theVariable;
 	
 	public VarDefStatement(VarExpression theVarExpr, MathExpression theMathExpr)
 	{
@@ -9,8 +10,20 @@ public class VarDefStatement extends Object
 		this.theMathExpr = theMathExpr;
 	}
 	
+	public VarDefStatement(Variable theVariable)
+	{
+		this.theVariable = theVariable;
+	}
+	
 	public String toString()
 	{
-		return theVarExpr.toString()+"="+theMathExpr.toString()+";";
+		if(theMathExpr != null)
+		{
+			return "Original Statement: " + this.theVarExpr.toString() + " = " + this.theMathExpr.toString() + ";";
+		}
+		else
+		{
+			return this.theVariable.toString();
+		}
 	}
 }
