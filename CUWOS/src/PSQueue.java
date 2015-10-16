@@ -24,6 +24,7 @@ public class PSQueue
 		else
 		{
 			//add with priority
+			theQs.get(PCB_Priority.HIGH).addLast(p);
 		}
 	}
 }
